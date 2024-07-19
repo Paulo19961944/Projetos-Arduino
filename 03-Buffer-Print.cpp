@@ -1,5 +1,3 @@
-#include <Arduino.h>
-
 String dadosSerial = ""; // String para armazenar os dados recebidos
 unsigned int tempoAnterior = 0; // Tempo da última impressão
 
@@ -30,7 +28,7 @@ void bufferPrint(String codigo, unsigned int leituraAnterior){
       // Imprime a parte da string até a vírgula
       Serial.println(codigo.substring(0, posVirgula + 1));
       // Imprime 500 em uma nova linha
-      Serial.println("500");
+      Serial.println(leituraAnterior);
       // Remove a parte impressa da string
       dadosSerial = codigo.substring(posVirgula + 1);
     }
