@@ -1,3 +1,5 @@
+#include <Arduino.h>
+
 String dadosSerial = ""; // String para armazenar os dados recebidos
 unsigned int tempoAnterior = 0; // Tempo da última impressão
 
@@ -32,6 +34,12 @@ void bufferPrint(String codigo, unsigned int leituraAnterior){
       // Remove a parte impressa da string
       dadosSerial = codigo.substring(posVirgula + 1);
     }
+    
+    // Verifica se ainda há dados para enviar
+    if (dadosSerial.length() == 0) {
+      Serial.println("\nDados enviados com sucesso!");
+    }
+    
     tempoAnterior = millis(); // Atualiza o tempo anterior para o atual
   }
 }
