@@ -1,7 +1,7 @@
 #include <Arduino.h>
 
 String dadosSerial = ""; // String para armazenar os dados recebidos
-unsigned long tempoAnterior = 0; // Tempo da última impressão
+unsigned int tempoAnterior = 0; // Tempo da última impressão
 
 void setup() {
   Serial.begin(9600); // Inicializa a comunicação serial
@@ -21,7 +21,7 @@ void loop() {
   bufferPrint(dadosSerial, 500);
 }
 
-void bufferPrint(String codigo, unsigned long leituraAnterior){
+void bufferPrint(String codigo, unsigned int leituraAnterior){
   // Verifica se passaram 500 ms desde a última impressão
   if (millis() - tempoAnterior >= leituraAnterior && codigo.length() > 0) {
     // Encontra a posição do primeiro caractere de vírgula
