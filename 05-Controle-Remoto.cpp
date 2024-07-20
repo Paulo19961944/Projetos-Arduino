@@ -15,8 +15,10 @@ void loop() {
       Serial.println(numControl); // Print "old" raw data
       IrReceiver.resume(); // Enable receiving of the next value
     
-    if(numControl == -16728320){
+    if(numControl == 0){
       digitalWrite(LED, HIGH);
-    }
+    } else if(numControl == -16728320){
+        digitalWrite(LED, LOW);
+      }
   } 
 }
