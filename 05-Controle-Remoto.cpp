@@ -14,10 +14,14 @@ void loop() {
       long numControl = IrReceiver.decodedIRData.decodedRawData;
       Serial.println(numControl); // Print "old" raw data
       IrReceiver.resume(); // Enable receiving of the next value
-    
+
+    // Se clicar no botão power e segurar, então ligar o led
     if(numControl == 0){
       digitalWrite(LED, HIGH);
-    } else if(numControl == -16728320){
+    } 
+      
+    // Se clicar no botão power apenas uma vez, sem segurar. Então desligar o led
+    else if(numControl == -16728320){ 
         digitalWrite(LED, LOW);
       }
   } 
