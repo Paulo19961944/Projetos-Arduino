@@ -27,9 +27,7 @@ void bufferPrint(String codigo, unsigned int leituraAnterior){
     String resultado = codigo.substring(1, posVirgula);
     if (posVirgula != -1) {
       // Imprime a String
-      if(resultado = "003011X" || resultado = "003011x"){
-        Serial.println(resultado);
-      }
+      Serial.print(resultado);
       // Remove a parte impressa da string
       dadosSerial = codigo.substring(posVirgula + 1);
     }
