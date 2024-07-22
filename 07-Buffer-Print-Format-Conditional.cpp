@@ -29,7 +29,9 @@ void bufferPrint(String codigo, unsigned int leituraAnterior){
       // Imprime a String
       if(resultado.equals("003011X") || resultado.equals("003011x")){
         Serial.println(resultado);
-      }
+      } else{
+          Serial.println("Digite o Buffer Correto!!!");
+        }
       // Imprime 500 em uma nova linha
       //Serial.println(leituraAnterior);
       // Remove a parte impressa da string
@@ -37,3 +39,4 @@ void bufferPrint(String codigo, unsigned int leituraAnterior){
     }
     tempoAnterior = millis(); // Atualiza o tempo anterior para o atual
   }
+}
