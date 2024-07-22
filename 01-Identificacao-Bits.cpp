@@ -8,19 +8,20 @@ void setup()
 
 void loop()
 { 
-  if(Serial.available() >= 8){ // Verifica se há pelo menos 8 bytes disponíveis
+  // Verifica se há pelo menos 8 bytes disponíveis
+  if(Serial.available() >= 8){
     // Lê os dados da porta serial
     while (Serial.available() > 0) {
-      char c = Serial.read();
+      char c = Serial.read(); // Armazena os caracteres do Serial
       dadosSerial += c; // Concatena os caracteres para formar a string completa
       delay(5); // Aguarda um breve período para receber o próximo caractere
     }
     
     // Extrai e converte os valores
-    char initialCommand = dadosSerial.charAt(0); // Adiciona ponto e vírgula aqui
-    int id = dadosSerial.substring(1, 3).toInt(); // Corrige os índices para pegar dois caracteres
-    int relay = dadosSerial.substring(3, 5).toInt(); // Corrige os índices para pegar dois caracteres
-    int module = dadosSerial.substring(5, 7).toInt(); // Corrige os índices para pegar dois caracteres
+    char initialCommand = dadosSerial.charAt(0); // Captura o Comando Inicial (Primeiro Caractere)
+    int id = dadosSerial.substring(1, 3).toInt(); // Captura os 3 primeiros indices
+    int relay = dadosSerial.substring(3, 5).toInt(); // Captura os 2 indices seguintes
+    int module = dadosSerial.substring(5, 7).toInt(); // Captura os 2 indices seguintes
     char code = dadosSerial.charAt(7); // Obtém o caractere na posição 7
 
     // Espera antes de enviar a resposta
