@@ -38,7 +38,6 @@ void loop() {
       // Recebe os dados e monta a string
       char inChar = (char)RS485Serial.read();
       inputString += inChar;
-
       // Se encontrou o caractere de nova linha, processa a string
       if (inChar == '\n') {
         bufferPrint(inputString, tempoAnterior);
