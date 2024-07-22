@@ -53,11 +53,12 @@ void bufferPrint(String codigo, unsigned int leituraAnterior) {
   if (millis() - tempoAnterior >= leituraAnterior && codigo.length() > 0) {
     // Encontra a posição do primeiro caractere de vírgula
     int posVirgula = codigo.indexOf(',');
-    String resultado = codigo.substring(1, posVirgula);
+    String resultado = codigo.substring(1, posVirgula -2);
     if (posVirgula != -1) {
       
       // Imprime a String conforme a lógica desejada
-      Serial.println(resultado);
+      Serial.print(resultado);
+      Serial.print("R");
       tempoAnterior = millis(); // Atualiza o tempo anterior para o atual
     }
   }
