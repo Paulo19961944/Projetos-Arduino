@@ -12,12 +12,15 @@ void setup() {
 void loop() {
   while (Serial.available() > 0) {
     char c = Serial.read();
-    
-    if (c == '\n') { // Se encontrar um caractere de nova linha, processa os dados
+
+    // Se encontrar um caractere de nova linha, processa os dados
+    if (c == '\n') {
       dadosSerial[dadosIndex] = '\0'; // Adiciona terminador nulo ao final da string
-      processarDados(dadosSerial);
+      processarDados(dadosSerial); // Chama a Função Processar Dados
       dadosIndex = 0; // Reinicia o índice para receber novos dados
-    } else if (dadosIndex < MAX_DATA_LENGTH - 1) { // Evita estouro do buffer
+
+      // Evita estouro do buffer
+    } else if (dadosIndex < MAX_DATA_LENGTH - 1) {
       dadosSerial[dadosIndex++] = c; // Adiciona o caractere ao array
     }
   }
