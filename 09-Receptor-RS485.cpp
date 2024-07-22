@@ -50,14 +50,9 @@ void loop() {
 void bufferPrint(String codigo, unsigned int leituraAnterior) {
   // Verifica se passaram 500 ms desde a última impressão
   if (millis() - tempoAnterior >= leituraAnterior && codigo.length() > 0) {
-    // Encontra a posição do primeiro caractere de vírgula
-    int posVirgula = codigo.indexOf(',');
-    String resultado = codigo.substring(1, posVirgula -2);
-    if (posVirgula != -1) {
-      // Imprime a String conforme a lógica desejada
-      Serial.print(resultado);
-      Serial.print("R");
-      tempoAnterior = millis(); // Atualiza o tempo anterior para o atual
-    }
+    // Remove o primeiro caractere "/" e o último caractere que é "X"
+    String resultado = codigo.substring(1, codigo.length() - 1) + "R";
+    Serial.println(resultado);  // Imprime o resultado modificado
+    tempoAnterior = millis();    // Atualiza o tempo anterior para o atual
   }
 }
