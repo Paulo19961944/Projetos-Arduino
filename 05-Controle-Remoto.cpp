@@ -4,22 +4,21 @@
 
 void setup()
 {
-  Serial.begin(9600); // Inicializa a Serial
-  IrReceiver.begin(IR_RECEIVE_PIN, ENABLE_LED_FEEDBACK); // Inicializa o IRReceiver
-  pinMode(LED, OUTPUT); // Define o Led como Saída
+  Serial.begin(9600);
+  IrReceiver.begin(IR_RECEIVE_PIN, ENABLE_LED_FEEDBACK); // Start the receiver
+  pinMode(LED, OUTPUT);
 }
 
 void loop() {
   if (IrReceiver.decode()) {
-      long numControl = IrReceiver.decodedIRData.decodedRawData; // Armazena o Código do IR
-      Serial.println(numControl); // Printa ele na tela
-      IrReceiver.resume(); // Espera o Próximo Valor
+    long numControl = IrReceiver.decodedIRData.decodedRawData;
+    IrReceiver.resume(); // Enable receiving of the next value
 
     // Se clicar no botão power e segurar, então ligar o led
     if(numControl == 0){
-      digitalWrite(LED, HIGH); 
+      digitalWrite(LED, HIGH);
     } 
-      
+    
     // Se clicar no botão power apenas uma vez, sem segurar. Então desligar o led
     else if(numControl == -16728320){ 
         digitalWrite(LED, LOW);
