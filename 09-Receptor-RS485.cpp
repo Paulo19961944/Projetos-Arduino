@@ -54,7 +54,6 @@ void bufferPrint(String codigo, unsigned int leituraAnterior) {
     int posVirgula = codigo.indexOf(',');
     String resultado = codigo.substring(1, posVirgula -2);
     if (posVirgula != -1) {
-      
       // Imprime a String conforme a lógica desejada
       Serial.print(resultado);
       Serial.print("R");
