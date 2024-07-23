@@ -48,8 +48,8 @@ void enviarDados(String dados) {
   // Habilita o módulo para transmissão
   digitalWrite(SSerialTxControl, RS485Transmit);
 
-  // Remove a barra inicial e envia os dados pela serial RS485
-  RS485Serial.println(dados.substring(1));
+  // Envia os dados pela serial RS485
+  RS485Serial.println(dados);
 
   // Aguarda até que todos os dados sejam enviados
   RS485Serial.flush();
@@ -58,6 +58,5 @@ void enviarDados(String dados) {
   digitalWrite(SSerialTxControl, RS485Receive);
 
   // Feedback para o Serial Monitor
-  Serial.println("Dados enviados: " + dados.substring(1));
+  Serial.println("Dados enviados: " + dados);
 }
-
