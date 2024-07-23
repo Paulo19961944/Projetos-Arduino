@@ -50,8 +50,8 @@ void loop() {
 void bufferPrint(String codigo, unsigned int leituraAnterior) {
   // Verifica se passaram 500 ms desde a última impressão
   if (millis() - tempoAnterior >= leituraAnterior && codigo.length() > 0) {
-    // Remove o primeiro caractere "/" e o último caractere que é "X"
-    String resultado = codigo.substring(1, codigo.length() - 1) + "R";
+    // Remove o primeiro caractere "/" e substitui o último caractere por "R"
+    String resultado = codigo.substring(1, codigo.length() - 2) + "R";
     Serial.println(resultado);  // Imprime o resultado modificado
     tempoAnterior = millis();    // Atualiza o tempo anterior para o atual
   }
