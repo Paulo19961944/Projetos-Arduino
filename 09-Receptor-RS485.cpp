@@ -1,58 +1,57 @@
 #include <SoftwareSerial.h>
 
-unsigned int tempoAnterior = 0; // Tempo da última impressão
-
-// Pinos de comunicação serial do módulo RS485
+unsigned int tempoAnterior = 0;
 #define Pino_RS485_RX 10 // DO (Direct Output)
 #define Pino_RS485_TX 11 // DI (Direct Input)
-
-// Pino de controle transmissão/recepção
 #define SSerialTxControl 3
 #define RS485Transmit HIGH
 #define RS485Receive LOW
 
-// Cria a serial por software para conexão com módulo RS485
 SoftwareSerial RS485Serial(Pino_RS485_RX, Pino_RS485_TX);
 
-// Armazena os dados que chegam pela serial
 String inputString = "";
 
 void setup() {
-  // Inicializa a serial do Arduino
   Serial.begin(9600);
   Serial.println("Módulo Receptor");
   Serial.println("Aguardando dados...");
   pinMode(SSerialTxControl, OUTPUT);
-
-  // Coloca o módulo RS485 em modo de recepção
   digitalWrite(SSerialTxControl, RS485Receive);
-
-  // Inicializa a serial do módulo RS485
   RS485Serial.begin(4800);
 }
 
 void loop() {
-  // Recebe os dados do RS485 via porta serial
   if (RS485Serial.available()) {
     while (RS485Serial.available()) {
-      // Recebe os dados e monta a string
       char inChar = (char)RS485Serial.read();
       inputString += inChar;
-      // Se encontrou o caractere de nova linha, processa a string
       if (inChar == '\n') {
         bufferPrint(inputString, tempoAnterior);
-        inputString = ""; // Limpa a string para receber novos dados
+        inputString = "";
       }
     }
   }
 }
 
-void bufferPrint(String codigo, unsigned int leituraAnterior) {
+void bufferPrint(String codigo, unsigned int leituraAnterior){
   // Verifica se passaram 500 ms desde a última impressão
   if (millis() - tempoAnterior >= leituraAnterior && codigo.length() > 0) {
-    // Remove o primeiro caractere "/" e substitui o último caractere por "R"
-    String resultado = codigo.substring(1, codigo.length() - 2) + "R";
-    Serial.println(resultado);  // Imprime o resultado modificado
-    tempoAnterior = millis();    // Atualiza o tempo anterior para o atual
+    // Encontra a posição do primeiro caractere de vírgula
+    int posVirgula = codigo.indexOf(',');
+    if (posVirgula != -1) {
+      // Imprime a parte da string até a vírgula
+      Serial.println(codigo.substring(1, posVirgula));
+      // Imprime 500 em uma nova linha
+      Serial.println(leituraAnterior);
+      // Remove a parte impressa da string
+      inputString = codigo.substring(posVirgula + 1);
+    }
+    
+    // Verifica se ainda há dados para enviar
+    if (inputString.length() == 0) {
+      Serial.println("\nDados enviados com sucesso!");
+    }
+    
+    tempoAnterior = millis(); // Atualiza o tempo anterior para o atual
   }
 }
