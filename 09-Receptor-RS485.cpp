@@ -1,6 +1,5 @@
 #include <SoftwareSerial.h>
 
-unsigned long tempoAnterior = 0;
 #define Pino_RS485_RX 10 // DO (Direct Output)
 #define Pino_RS485_TX 11 // DI (Direct Input)
 #define SSerialTxControl 3
@@ -38,39 +37,40 @@ void processInput(String input) {
   input.trim();
   
   // Substitui todas as '/' por '' (vazio)
-  input.replace("/", " ");
+  input.replace("/", "");
   
-  // Substitui todas as ',' por '' (vazio)
-  input.replace(",", " ");
-
-  input.replace("X", "R");
-  input.replace("x", "r");
+  // Separa os códigos por vírgula
+  int startPos = 0;
+  int commaPos = input.indexOf(',', startPos);
+  while (commaPos != -1) {
+    String codigo = input.substring(startPos, commaPos);
+    bufferPrint(codigo, 500); // Chama bufferPrint com intervalo de 500 ms
+    startPos = commaPos + 1;
+    commaPos = input.indexOf(',', startPos);
+  }
   
-  // Verifica se a entrada não está vazia
-  if (input.length() > 0) {
-    // Divide a entrada em tokens separados por ',' (caso haja algum restante, mas agora deveria estar vazio)
-    int startPos = 0;
-    int commaPos = input.indexOf(',', startPos);
-    while (commaPos != -1) {
-      String codigo = input.substring(startPos, commaPos);
-      bufferPrint(codigo, tempoAnterior);
-      startPos = commaPos + 1;
-      commaPos = input.indexOf(',', startPos);
-    }
-    
-    // Processa o último código depois da última vírgula (mas não deve haver mais vírgulas)
-    if (startPos < input.length()) {
-      String codigo = input.substring(startPos);
-      bufferPrint(codigo, tempoAnterior);
-    }
-  } 
-  Serial.println("Buffer: " + input);
+  // Processa o último código depois da última vírgula
+  if (startPos < input.length()) {
+    String codigo = input.substring(startPos);
+    bufferPrint(codigo, 500); // Chama bufferPrint com intervalo de 500 ms
+  }
+  
+  Serial.println(""); // Adiciona uma linha em branco entre as entradas
 }
 
-
-void bufferPrint(String codigo, unsigned long leituraAnterior){
-  // Verifica se passaram 500 ms desde a última impressão
-  if (millis() - tempoAnterior >= leituraAnterior && codigo.length() > 0) {
-    tempoAnterior = millis(); // Atualiza o tempo anterior para o atual
+void bufferPrint(String codigo, unsigned long intervalo) {
+  // Remove espaços em branco extras
+  codigo.trim();
+  
+  // Substitui 'X' por 'R'
+  codigo.replace("X", "R");
+  
+  // Imprime o código
+  Serial.println(codigo + ",");
+  
+  // Aguarda o intervalo desejado usando millis()
+  unsigned long startTime = millis();
+  while (millis() - startTime < intervalo) {
+    // Aguarda passivamente até completar o intervalo
   }
 }
