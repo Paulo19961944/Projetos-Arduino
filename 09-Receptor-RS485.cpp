@@ -64,6 +64,7 @@ void bufferPrint(String codigo, unsigned long intervalo) {
   
   // Substitui 'X' por 'R'
   codigo.replace("X", "R");
+  codigo.replace("x", "r");
   
   // Imprime o código
   Serial.println(codigo + ",");
