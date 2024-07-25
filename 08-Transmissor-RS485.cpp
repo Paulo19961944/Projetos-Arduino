@@ -22,11 +22,12 @@ void setup() {
 void loop() {
   while (Serial.available() > 0) {
     char c = Serial.read();
-    // Acumula os caracteres digitados na string dadosSerial
     dadosSerial += c;
     
     // Se encontrar um caractere de nova linha ('\n'), termina a entrada
     if (c == '\n') {
+      // Envia os dados no formato solicitado: /003011X,/001011X,/002022X,
+      dadosSerial.replace("R", "X");
       enviarDados(dadosSerial); // Envia os dados acumulados
       dadosSerial = ""; // Limpa a string para a próxima entrada
     }
