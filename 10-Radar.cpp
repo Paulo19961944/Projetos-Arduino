@@ -1,7 +1,7 @@
 #include <SoftwareSerial.h>
 
 // Crie um objeto SoftwareSerial para os pinos 10 e 11
-SoftwareSerial sensorSerial(11, 10); // RX, TX
+SoftwareSerial sensorSerial(10, 11); // RX, TX
 
 void setup() {
   // Inicialize a comunicação serial com o monitor serial a 9600 bps
@@ -18,7 +18,8 @@ void loop() {
     byte data = sensorSerial.read();
     
     // Imprima o valor recebido em formato decimal
-    Serial.print("Dados recebidos do sensor (decimal): ");
-    Serial.println(data);  // Imprime o valor em decimal
+    if(data < 1){
+      Serial.println("Pessoa Detectada!");
+    }
   }
 }
