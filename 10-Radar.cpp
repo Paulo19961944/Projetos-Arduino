@@ -1,31 +1,50 @@
+/******************************************************* AJUSTES A SER FEITO ***************************************************
+********************************************************************************************************************************
+/************************************************************** INICIO *********************************************************
+/***** Foi constatado que sempre que envia um pulso negativo, o led acende e o serial manda uma resposta para o serial *********
+/***** Preciso implementar apenas o pulso negativo na hora certa. Consultar o Datasheet de forma mais detalhada ****************
+/***** O Comando utilizado está na variável comandoDetectaMovimento ************************************************************
+********************************************************************************************************************************
+/**************************************************************** FIM **********************************************************
+*/
+
+
 #include <SoftwareSerial.h>
 
-// Crie um objeto SoftwareSerial para os pinos 10 e 11
-SoftwareSerial sensorSerial(10, 11); // RX, TX
+// Configurações
+const int pinoRadarRx = 10;
+const int pinoRadarTx = 11;
+const int pinoLed = 7;
+const int velocidadeSerial = 256000; // Ajuste a taxa de transmissão para uma mais segura
+
+// Comando para detectar movimento
+const byte comandoDetectaMovimento[] = {0x00, 0x61}; // Ajuste conforme o datasheet
+
+SoftwareSerial radarSerial(pinoRadarRx, pinoRadarTx);
 
 void setup() {
-  // Inicialize a comunicação serial com o monitor serial a 9600 bps
   Serial.begin(9600);
-  
-  // Inicialize a comunicação serial com o sensor a 256000 bps
-  sensorSerial.begin(256000);
+  radarSerial.begin(velocidadeSerial);
+  pinMode(pinoLed, OUTPUT);
+  digitalWrite(pinoLed, LOW); // Garante que o LED esteja apagado inicialmente
 }
 
 void loop() {
-  // Verifique se há dados disponíveis do sensor
-  if (sensorSerial.available()) {
-    byte data = sensorSerial.read();
-    
-    // Imprime o valor recebido em decimal e hexadecimal
-    Serial.print("Dados recebidos (Decimal): ");
-    Serial.print(data);
-    Serial.print("  (Hexadecimal): ");
-    Serial.println(data, HEX);
-    
-    // Exemplo de lógica para detectar valores específicos
-    int detectionThreshold = 50; // Ajuste conforme necessário
-    if (data < detectionThreshold) {
-      Serial.println("Pessoa Detectada!");
-    }
+  // Envia o comando para detectar movimento
+  radarSerial.write(comandoDetectaMovimento, sizeof(comandoDetectaMovimento));
+
+  // Lê a resposta do radar
+  String resposta = "";
+  while (radarSerial.available()) {
+    char c = radarSerial.read();
+    resposta += c;
   }
+
+  // Exibe a resposta no monitor serial para depuração
+  if (resposta.length() > 0) {
+    Serial.println("Resposta do radar: " + resposta);
+    digitalWrite(pinoLed, HIGH);
+  }
+
+  delay(500); // Aguarda antes de enviar o próximo comando
 }
