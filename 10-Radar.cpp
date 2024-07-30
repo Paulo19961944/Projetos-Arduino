@@ -1,14 +1,11 @@
 /******************************************************* AJUSTES A SER FEITO ***************************************************
 ********************************************************************************************************************************
 /************************************************************** INICIO *********************************************************
-/***** Foi constatado que sempre que envia um pulso negativo, o led acende e o serial manda uma resposta para o serial *********
-/***** Preciso implementar apenas o pulso negativo na hora certa. Consultar o Datasheet de forma mais detalhada ****************
-/***** O Comando utilizado está na variável comandoDetectaMovimento ************************************************************
+/***** Foi constatado que sempre que envia um pulso negativo, o led acende e o serial manda uma resposta para o Arduino ********
+/***** E não tem nada a ver com o sensor em si. Necessito verificar a causa desse comportamento*********************************
 ********************************************************************************************************************************
 /**************************************************************** FIM **********************************************************
-*/
-
-
+*******************************************************************************************************************************/
 #include <SoftwareSerial.h>
 
 // Configurações
@@ -45,6 +42,6 @@ void loop() {
     Serial.println("Resposta do radar: " + resposta);
     digitalWrite(pinoLed, HIGH);
   }
-
-  delay(500); // Aguarda antes de enviar o próximo comando
+  
+  millis(); // Aguarda antes de enviar o próximo comando
 }
