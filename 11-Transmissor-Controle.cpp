@@ -1,32 +1,39 @@
+// INCLUINDO A BIBLIOTECA IRREMOTE
 #include <IRremote.h>
 
 // CHAMANDO O OBJETO
 IRsend irsend;
 
+// SETUP
 void setup() {
   Serial.begin(9600); // Inicializa a Serial
 }
 
 void loop() {
+  // CONTROLA A TV SE TIVER DADOS NO SERIAL
   if (Serial.available() > 0) {
     controlarTV();
   }
 }
 
+// ENVIA OS DADOS
 void enviarDados(unsigned long hexControl) {
   irsend.sendNEC(hexControl, 32); // Envia o código IR usando o protocolo NEC
   delay(1000); // Espera 1 segundo entre envios
 }
 
+// FUNÇÃO PARA CONTROLAR A TV
 void controlarTV() {
   char tecla = Serial.read(); // Captura o Serial para a Variavel Tecla
 
   // CONDICIONAL PARA CONTROLAR A TV
   switch (tecla) {
+    
     // LIGAR E DESLIGAR
     case 'P':
       enviarDados(0x20DF10EF);
       break;
+    
     // NÚMEROS DE 0 A 9
     case '0':
       enviarDados(0x20DF08F7);
